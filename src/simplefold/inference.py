@@ -55,7 +55,7 @@ def initialize_folding_model(args):
     ckpt_path = os.path.join(ckpt_dir, f"{simplefold_model}.ckpt")
     if not os.path.exists(ckpt_path):
         os.makedirs(ckpt_dir, exist_ok=True)
-        os.system(f"curl -O {ckpt_url_dict[simplefold_model]} {ckpt_path}")
+        os.system(f"curl -L {ckpt_url_dict[simplefold_model]} -o {ckpt_path}")
     cfg_path = os.path.join("configs/model/architecture", f"foldingdit_{simplefold_model[11:]}.yaml")
 
     checkpoint = torch.load(ckpt_path, map_location="cpu", weights_only=False)
@@ -92,7 +92,7 @@ def initialize_plddt_module(args, device):
     plddt_ckpt_path = os.path.join(args.ckpt_dir, "plddt.ckpt")
     if not os.path.exists(plddt_ckpt_path):
         os.makedirs(args.ckpt_dir, exist_ok=True)
-        os.system(f"curl -O {plddt_ckpt_url} {plddt_ckpt_path}")
+        os.system(f"curl -L {plddt_ckpt_url} -o {plddt_ckpt_path}")
 
     plddt_module_path = "configs/model/architecture/plddt_module.yaml"
     plddt_checkpoint = torch.load(plddt_ckpt_path, map_location="cpu", weights_only=False)
@@ -120,7 +120,7 @@ def initialize_plddt_module(args, device):
     plddt_latent_ckpt_path = os.path.join(args.ckpt_dir, "simplefold_1.6B.ckpt")
     if not os.path.exists(plddt_latent_ckpt_path):
         os.makedirs(args.ckpt_dir, exist_ok=True)
-        os.system(f"curl -O {ckpt_url_dict['simplefold_1.6B']} {plddt_latent_ckpt_path}")
+        os.system(f"curl -L {ckpt_url_dict['simplefold_1.6B']} -o {plddt_latent_ckpt_path}")
 
     plddt_latent_config_path = "configs/model/architecture/foldingdit_1.6B.yaml"
     plddt_latent_checkpoint = torch.load(plddt_latent_ckpt_path, map_location="cpu", weights_only=False)
