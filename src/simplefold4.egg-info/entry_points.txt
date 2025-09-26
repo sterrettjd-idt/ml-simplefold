@@ -1,0 +1,2 @@
+[console_scripts]
+simplefold = simplefold.cli:main

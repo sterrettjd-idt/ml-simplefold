@@ -13,22 +13,27 @@ from copy import deepcopy
 from pathlib import Path
 from itertools import starmap
 
-import mlx.core as mx
-from mlx.utils import tree_unflatten, tree_flatten
-
 from model.flow import LinearPath
 from model.torch.sampler import EMSampler
-from model.mlx.sampler import EMSampler as EMSamplerMLX
-from model.mlx.esm_network import ESM2 as ESM2MLX
 
 from processor.protein_processor import ProteinDataProcessor
 from utils.datamodule_utils import process_one_inference_structure
 from utils.esm_utils import _af2_to_esm, esm_registry
 from utils.boltz_utils import process_structure, save_structure
 from utils.fasta_utils import process_fastas, download_fasta_utilities, check_fasta_inputs
-from utils.mlx_utils import map_torch_to_mlx, map_plddt_torch_to_mlx
 from boltz_data_pipeline.feature.featurizer import BoltzFeaturizer
 from boltz_data_pipeline.tokenize.boltz_protein import BoltzTokenizer
+
+try: 
+    import mlx.core as mx
+    from mlx.utils import tree_unflatten, tree_flatten
+    from model.mlx.sampler import EMSampler as EMSamplerMLX
+    from model.mlx.esm_network import ESM2 as ESM2MLX
+    from utils.mlx_utils import map_torch_to_mlx, map_plddt_torch_to_mlx
+    MLX_AVAILABLE = True
+except:
+    MLX_AVAILABLE = False
+    print("MLX not installed, skip importing MLX related packages.")
 
 
 ckpt_url_dict = {
@@ -253,6 +258,10 @@ def predict_structures_from_fastas(args):
     prediction_dir.mkdir(parents=True, exist_ok=True)
     cache = output_dir / "cache"
     cache.mkdir(parents=True, exist_ok=True)
+
+    if args.backend == "mlx" and not MLX_AVAILABLE:
+        args.backend = "torch"
+        print("MLX not available, switch to torch backend.")
 
     # initialize models
     model, device = initialize_folding_model(args)
