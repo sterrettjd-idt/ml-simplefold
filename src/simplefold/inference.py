@@ -12,6 +12,7 @@ import numpy as np
 from copy import deepcopy
 from pathlib import Path
 from itertools import starmap
+import lightning.pytorch as pl
 
 from model.flow import LinearPath
 from model.torch.sampler import EMSampler
@@ -258,6 +259,9 @@ def predict_structures_from_fastas(args):
     prediction_dir.mkdir(parents=True, exist_ok=True)
     cache = output_dir / "cache"
     cache.mkdir(parents=True, exist_ok=True)
+
+    # set random seed for reproducibility
+    pl.seed_everything(args.seed, workers=True)
 
     if args.backend == "mlx" and not MLX_AVAILABLE:
         args.backend = "torch"
