@@ -121,6 +121,12 @@ python src/simplefold/process_mmcif.py \
     --out_dir [OUTPUT_DIR]   # directory of processed targets
     --use-assembly
 ```
+To further tokenize the processed structures:
+```
+python src/simplefold/process_structure.py \
+    --target_dir [TARGET_DIR]   # directory of processed targets
+    --token_dir [TOKEN_DIR]   # directory of tokenized data
+```
 
 ### Training
 
