@@ -29,6 +29,7 @@ To install `simplefold` package from github repository, run
 git clone https://github.com/apple/ml-simplefold.git
 cd ml-simplefold
 conda create -n simplefold python=3.10
+conda activate simplefold
 python -m pip install -U pip build; pip install -e .
 ```
 If you want to use MLX backend on Apple silicon: 
